@@ -14,11 +14,13 @@ public class EndpointFactory {
 
     private final String URL_PKG_PREFIXES = "org.jboss.ejb.client.naming";
     private final String INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
-    private final String PROVIDER_URL = "http-remoting://backend.dcarl.me:8082";
+    private final String PROVIDER_URL = "http-remoting://localhost:8082";
     private final String LOOKUP_NAME = "ejb:/4/ContractBean!contract.interfaces.BeanInterface";
 
     public BeanInterface getEndpoint() {
-        Map<String, String> env = System.getenv();
+
+        return this.getProductionEndpoint();
+        /*Map<String, String> env = System.getenv();
         boolean isProdEnv = env.containsKey(this.ENV_VAL_KEY) && env.get(this.ENV_VAL_KEY).equals("1");
 
         if(isProdEnv) {
@@ -30,7 +32,7 @@ public class EndpointFactory {
 
         String logMsg = "Dev endpoint initialized";
         System.out.println(logMsg);
-        return this.getProductionEndpoint();
+        return null;*/
     }
 
     private BeanInterface getProductionEndpoint() {

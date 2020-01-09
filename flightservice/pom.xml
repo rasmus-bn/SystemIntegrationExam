@@ -22,8 +22,8 @@
 	<repositories>
 		<repository>
 			<id>snapshots</id>
-			<name>333bdd21ebb9-snapshots</name>
-			<url>http://dcarl.me:8081/artifactory/libs-snapshot</url>
+			<name>libs-snapshot</name>
+			<url>http://35.207.154.57:8081/artifactory/libs-snapshot</url>
 		</repository>
 	</repositories>
 
@@ -51,9 +51,21 @@
 		</dependency>
 
 		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>8.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.bsc.bean/beanmanager -->
+		<dependency>
+			<groupId>org.bsc.bean</groupId>
+			<artifactId>beanmanager</artifactId>
+			<version>1.4.1</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
 			<groupId>LargeSystemDevelopment</groupId>
 			<artifactId>LargeSystemDevelopment</artifactId>
-			<version>1.0-20191119.121456-1</version>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.wildfly</groupId>

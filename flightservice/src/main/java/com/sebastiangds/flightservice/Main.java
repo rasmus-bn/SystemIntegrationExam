@@ -6,6 +6,7 @@ import contract.interfaces.BeanInterface;
 public class Main {
     public static void main(String[] args) {
         BeanInterface e = new EndpointFactory().getEndpoint();
-        System.out.println(e.whoAmI("SI exam project"));
+        String response = e.whoAmI("SI exam project");
+        System.out.println(response);
     }
 }
