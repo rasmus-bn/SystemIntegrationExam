@@ -1,0 +1,19 @@
+{
+  "name": "loggerserver",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "amqplib": "latest",
+    "csv-write-stream": "^2.0.0",
+    "csv-writer": "^1.5.0",
+    "fs": "0.0.1-security",
+    "js-beautify": "^1.9.1",
+    "json2csv": "^4.5.4"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

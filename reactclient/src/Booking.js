@@ -3,7 +3,7 @@ import React from 'react'
 export default class Booking extends React.Component {
     constructor() {
         super();
-        this.state = { showTickets: false, idPicked : null }
+        this.state = { showTickets: false, ticketId : null}
     }
 
     render() {
@@ -12,24 +12,69 @@ export default class Booking extends React.Component {
                 <input placeholder="booking id" />
                 <input type="submit" />
             </form>
-            {this.state.showTickets ? <form onSubmit={this.doneWithBooking}>
-                <input type="radio" name="ticketChoice" value="ticket1" />ticket1<br />
-                <input type="radio" name="ticketChoice" value="ticket2" />ticket2<br />
-                <input type="radio" name="ticketChoice" value="ticket3" />ticket3<br />
-                <input type="radio" name="ticketChoice" value="ticket4" />ticket4<br />
-                <input type="radio" name="ticketChoice" value="ticket5" />ticket5<br />
-                <input type="radio" name="ticketChoice" value="ticket6" />ticket6<br />
-                <input type="submit" />
-            </form>:'please pick an id'}
+        {this.state.showTickets ? <form onSubmit={this.doneWithBooking}>
+      <p>Select a ticket:</p>
+      
+      <ul>
+        <li>
+          <label>
+            <input
+              type="radio"
+              value="1"
+              checked={this.state.size === "small"}
+              onChange={this.handleChange}
+            />
+            ticket1 (id 1)
+          </label>
+        </li>
+        
+        <li>
+          <label>
+            <input
+              type="radio"
+              value="1"
+              checked={this.state.size === "medium"}
+              onChange={this.handleChange}
+            />
+            ticket2 (id 1)
+          </label>
+        </li>
+
+        <li>
+          <label>
+            <input
+              type="radio"
+              value="1"
+              checked={this.state.size === "large"}
+              onChange={this.handleChange}
+            />
+            ticket3 (id 1)
+          </label>
+        </li>
+      </ul>
+
+      <button type="submit">Make your choice</button>
+        <p>currently picked: {this.state.ticketId}</p>
+    </form>:'please pick an id'}
+
+            
 
         </div>)
     }
+    handleChange = (event) => {
+        this.setState({
+          ticketId: event.target.value
+        });
+      }
+
     showTickets = (e) => {
         this.setState({showTickets: true});
+        this.props.done("booking id", e.target[0].value);
         e.preventDefault();
     }
 
     doneWithBooking = (e) => {
+        this.props.done("ticket id", this.state.ticketId);
         this.props.done("booking done");
         e.preventDefault();
     }

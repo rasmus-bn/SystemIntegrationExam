@@ -3,17 +3,14 @@ package food.rest.code.endpoints;
 import com.google.gson.Gson;
 import food.rest.code.Entities.Food;
 import food.rest.code.logic.JSONHandler;
-import logging.Message;
-import logging.Sender;
+import food.rest.code.logging.Sender;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(path = "${v1API}/food")
@@ -30,14 +27,14 @@ public class FoodController {
         this.gson = new Gson();
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/test")
     public String doIt(){
         String toString = gson.toJson(foods.get(0));
         return toString;
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/categories")
     public String getCategories(){
         ArrayList<String> categories = null;
@@ -54,7 +51,7 @@ public class FoodController {
         return gson.toJson(categories);
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/{id}")
     public String getFoodById(@PathVariable long id){
         Food foodById = null;
@@ -72,7 +69,7 @@ public class FoodController {
         return gson.toJson(foodById);
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/category")
     public String getCategory(@RequestParam String name){
         ArrayList<Food> categorizedFoods = null;
@@ -89,7 +86,7 @@ public class FoodController {
         return gson.toJson(categorizedFoods);
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/names")
     public String getFoodByName(@RequestParam String name){
         ArrayList<Food> foodsByName = null;
