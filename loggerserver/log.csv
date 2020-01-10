@@ -1,0 +1,25 @@
+timeStamp, value, severity, description, message
+2020-1-9 19:35,4,WARNING,NaN:'hey',rating on service
+2020-1-9 19:39,4,WARNING,NaN:'hey',rating on service
+2020-1-9 19:39,4,WARNING,NaN:'hey',rating on service
+2020-1-9 19:39,4,WARNING,NaN:'hey',rating on service
+2020-1-9 19:39,4,WARNING,NaN:'hey',rating on service
+2020-1-9 19:39,4,WARNING,NaN:'hey',rating on service
+2020-1-9 19:51,4,WARNING,NaN:'hey',rating on service
+2020-1-9 19:51,4,WARNING,NaN:'hey',rating on service
+2020-1-9 19:51,4,WARNING,NaN:'hey',rating on service
+2020-1-9 19:51,4,WARNING,NaN:'hey',rating on service
+2020-1-10 13:1,4,WARNING,NaN:'hey',rating on service
+2020-1-10 13:22,4,WARNING,NaN: 'hey',rating on service
+2020-1-10 13:38,6,INFO,select all categories,rating on service
+2020-1-10 13:39,6,INFO,select all categories,rating on service
+2020-1-10 13:39,6,INFO,select all categories,rating on service
+2020-1-10 13:59,6,INFO,select all categories,rating on service
+2020-1-10 14:10,6,INFO,select all categories,list size is: 24
+2020-1-10 14:14,6,INFO,select food by id,food name is: Angelica
+2020-1-10 14:21,4,WARNING,NullPointerException,food with id: 121121 does not exist
+2020-1-10 14:39,6,INFO,select food by id,food name is: Silver linden
+2020-1-10 14:50,-1,something,something,something
+2020-1-10 14:57,-1,something,something,something
+2020-1-10 14:58,4,WARNING,this is a description,undefined
+2020-1-10 14:59,4,WARNING,this is a description,this is a message
