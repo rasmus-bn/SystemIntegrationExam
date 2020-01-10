@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package com.sebastiangds.flightservice;
+option java_multiple_files = true;
+option java_package = "com.sebastiangds.flightservice.lib";
+option java_outer_classname = "GetBookingProto";
+
+service FlightService {
+    rpc GetBooking (GetBookingRequest) returns (GetBookingReply) {
+
+    }
+}
+
+message GetBookingRequest {
+    int64 bookingId = 1;
+}
+
+message GetBookingReply {
+    int64 bookingId = 1;
+    double price = 2;
+}
