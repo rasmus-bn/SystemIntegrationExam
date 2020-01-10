@@ -10,7 +10,7 @@ import java.util.Properties;
 
 public class EndpointFactory {
 
-    private final String ENV_VAL_KEY = "LSD_FE_PROD";
+    private final String ENV_VAL_KEY = "FLIGHT_SERVICE_PROD";
 
     private final String URL_PKG_PREFIXES = "org.jboss.ejb.client.naming";
     private final String INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
@@ -18,21 +18,41 @@ public class EndpointFactory {
     private final String LOOKUP_NAME = "ejb:/4/ContractBean!contract.interfaces.BeanInterface";
 
     public BeanInterface getEndpoint() {
+        EnvType envType = EnvType.DEV;
+        Map<String, String> sysEnv = System.getenv();
 
-        return this.getProductionEndpoint();
-        /*Map<String, String> env = System.getenv();
-        boolean isProdEnv = env.containsKey(this.ENV_VAL_KEY) && env.get(this.ENV_VAL_KEY).equals("1");
-
-        if(isProdEnv) {
-            BeanInterface endpoint = this.getProductionEndpoint();
-            String logMsg = "Prod endpoint initialized";
-            System.out.println(logMsg);
-            return endpoint;
+        if (sysEnv.containsKey(this.ENV_VAL_KEY)) {
+            String envVar = sysEnv.get(this.ENV_VAL_KEY);
+            try {
+                envType = EnvType.valueOf(envVar);
+            } catch (IllegalArgumentException e) {
+                String warningMsg =
+                        "Environment " + envVar + " provided by "
+                                + this.ENV_VAL_KEY + " not recognised. " +
+                                "Continue in " + envType.toString();
+                System.out.println(warningMsg);
+                // todo logging
+            }
         }
 
-        String logMsg = "Dev endpoint initialized";
-        System.out.println(logMsg);
-        return null;*/
+        switch (envType) {
+            case DEV:
+                return this.getDevEndpoint();
+            case TEST:
+                return this.getTestEndpoint();
+            case PROD:
+                return this.getProductionEndpoint();
+            default:
+                return this.getDevEndpoint();
+        }
+    }
+
+    private BeanInterface getDevEndpoint() {
+        return this.getProductionEndpoint();
+    }
+
+    private BeanInterface getTestEndpoint() {
+        return null;
     }
 
     private BeanInterface getProductionEndpoint() {
@@ -48,7 +68,14 @@ public class EndpointFactory {
             BeanInterface endpoint = (BeanInterface) ic.lookup(this.LOOKUP_NAME);
             return endpoint;
         } catch (NamingException e) {
+            System.out.println("***********************************************************");
+            System.out.println("***********************************************************");
+            System.out.println("***********************************************************");
+            System.out.println("***********************************************************");
+            System.out.println("***********************************************************");
+            System.out.println("*********************" + e.getExplanation());
             e.printStackTrace();
+            // todo logging
         }
         return null;
     }
