@@ -12,10 +12,26 @@ service FlightService {
 }
 
 message GetBookingRequest {
-    int64 bookingId = 1;
+    int64 booking_id = 1;
 }
 
 message GetBookingReply {
-    int64 bookingId = 1;
-    double price = 2;
+    BookingInfo booking = 1;
 }
+
+message BookingInfo {
+    int64 booking_id = 1;
+    double price = 2;
+    repeated TicketInfo tickets = 3;
+}
+
+message TicketInfo {
+    int64 flight_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string dep_aiport_name = 4;
+    string dep_aiport_iata = 5;
+    string arr_aiport_name = 6;
+    string arr_aiport_iata = 7;
+}
+

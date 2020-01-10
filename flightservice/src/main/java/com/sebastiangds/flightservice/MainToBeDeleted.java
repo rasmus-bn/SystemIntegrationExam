@@ -27,6 +27,7 @@ public class MainToBeDeleted {
         }
         System.out.println(response);
         Booking b = beanI.getBooking(u, new PNRIdentifier(1));
+        System.out.println(b);
         System.out.println(b.getPrice());
     }
 }

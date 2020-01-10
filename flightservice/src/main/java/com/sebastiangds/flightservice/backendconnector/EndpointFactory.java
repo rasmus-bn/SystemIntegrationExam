@@ -15,6 +15,7 @@ public class EndpointFactory {
     private final String URL_PKG_PREFIXES = "org.jboss.ejb.client.naming";
     private final String INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
     private final String PROVIDER_URL = "http-remoting://35.207.154.57:8082";
+    //private final String PROVIDER_URL = "http-remoting://localhost:8080";
     private final String LOOKUP_NAME = "ejb:/4/ContractBean!contract.interfaces.BeanInterface";
 
     public BeanInterface getEndpoint() {
@@ -56,6 +57,7 @@ public class EndpointFactory {
     }
 
     private BeanInterface getProductionEndpoint() {
+        System.out.println("Prod endpoint ...");
         try {
             Properties prop = new Properties();
             prop.put(Context.URL_PKG_PREFIXES, this.URL_PKG_PREFIXES);
