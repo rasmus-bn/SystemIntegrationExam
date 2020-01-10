@@ -26,3 +26,7 @@ timeStamp, value, severity, description, message
 2020-1-10 17:9,4,WARNING,this is a blabla,this is a message
 2020-1-10 19:39,4,WARNING,hello from flightserivce,its me mo
 2020-1-10 20:17,-1,FINE,A user checked this booking with Pnr:,2
+2020-1-10 20:33,-1,FINE,A user checked this booking with Pnr:,2
+2020-1-10 20:33,-1,FINE,A user checked this booking with Pnr:,3
+2020-1-10 20:33,-1,FINE,A user checked this booking with Pnr:,1
+2020-1-10 20:37,4,WARNING,A user search on a non existing booking  with pnr:,0
