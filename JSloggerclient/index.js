@@ -1,3 +1,3 @@
 var sender = require("./sender");
 
-sender.makeLog("WARNING", "this is a description", "this is a message");
+sender.makeLog("WARNING", "this is a blabla", "this is a message");
