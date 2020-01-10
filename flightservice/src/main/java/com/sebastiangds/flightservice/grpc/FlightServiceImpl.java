@@ -7,9 +7,13 @@ import com.sebastiangds.flightservice.lib.*;
 import contract.dto.*;
 import contract.interfaces.BeanInterface;
 import io.grpc.stub.StreamObserver;
+import logging.Sender;
 import org.lognet.springboot.grpc.GRpcService;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
 
 @GRpcService
 public class FlightServiceImpl extends FlightServiceGrpc.FlightServiceImplBase {
@@ -18,9 +22,19 @@ public class FlightServiceImpl extends FlightServiceGrpc.FlightServiceImplBase {
 
     @Override
     public void getBooking(GetBookingRequest request, StreamObserver<GetBookingReply> responseObserver) {
+
         PNRIdentifier pnr = new PNRIdentifier(request.getBookingId());
         System.out.println(pnr.getPnr());
-        BeanInterface backend = new EndpointFactory().getEndpoint();
+        BeanInterface backend = null;
+        Sender send = null;
+        try {
+            backend = new EndpointFactory().getEndpoint();
+             send = new Sender();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
 
         Booking booking = backend.getBooking(user, pnr);
 
@@ -59,5 +73,6 @@ public class FlightServiceImpl extends FlightServiceGrpc.FlightServiceImplBase {
         System.out.println(booking.getPrice());
         responseObserver.onNext(reply);
         responseObserver.onCompleted();
+        send.makeLog("FlightSericeImpl", Level.FINE,"A user checked this booking with Pnr:",""+booking.getPnr().getPnr());
     }
 }

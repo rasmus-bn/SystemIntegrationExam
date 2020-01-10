@@ -1,12 +1,16 @@
 package com.sebastiangds.flightservice.backendconnector;
 
 import contract.interfaces.BeanInterface;
+import logging.Sender;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
 
 public class EndpointFactory {
 
@@ -18,7 +22,8 @@ public class EndpointFactory {
     //private final String PROVIDER_URL = "http-remoting://localhost:8080";
     private final String LOOKUP_NAME = "ejb:/4/ContractBean!contract.interfaces.BeanInterface";
 
-    public BeanInterface getEndpoint() {
+    public BeanInterface getEndpoint() throws IOException, TimeoutException {
+        Sender sender = new Sender();
         EnvType envType = EnvType.DEV;
         Map<String, String> sysEnv = System.getenv();
 
@@ -31,8 +36,7 @@ public class EndpointFactory {
                         "Environment " + envVar + " provided by "
                                 + this.ENV_VAL_KEY + " not recognised. " +
                                 "Continue in " + envType.toString();
-                System.out.println(warningMsg);
-                // todo logging
+                sender.makeLog("EndpointFactory", Level.SEVERE,"Bean connection error",warningMsg);
             }
         }
 
@@ -48,7 +52,7 @@ public class EndpointFactory {
         }
     }
 
-    private BeanInterface getDevEndpoint() {
+    private BeanInterface getDevEndpoint() throws IOException, TimeoutException {
         return this.getProductionEndpoint();
     }
 
@@ -56,7 +60,8 @@ public class EndpointFactory {
         return null;
     }
 
-    private BeanInterface getProductionEndpoint() {
+    private BeanInterface getProductionEndpoint() throws IOException, TimeoutException {
+        Sender sender = new Sender();
         System.out.println("Prod endpoint ...");
         try {
             Properties prop = new Properties();
@@ -70,15 +75,9 @@ public class EndpointFactory {
             BeanInterface endpoint = (BeanInterface) ic.lookup(this.LOOKUP_NAME);
             return endpoint;
         } catch (NamingException e) {
-            System.out.println("***********************************************************");
-            System.out.println("***********************************************************");
-            System.out.println("***********************************************************");
-            System.out.println("***********************************************************");
-            System.out.println("***********************************************************");
-            System.out.println("*********************" + e.getExplanation());
-            e.printStackTrace();
-            // todo logging
+
+            sender.makeLog("EndpointFactory", Level.SEVERE, "Bean naming wrong in production", e.getMessage());
+            return null;
         }
-        return null;
-    }
-}
+
+    }}
