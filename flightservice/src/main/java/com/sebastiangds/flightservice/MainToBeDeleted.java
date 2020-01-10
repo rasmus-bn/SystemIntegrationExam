@@ -1,8 +1,10 @@
 package com.sebastiangds.flightservice;
 
 import com.sebastiangds.flightservice.backendconnector.EndpointFactory;
+import com.sebastiangds.flightservice.components.TicketHelper;
 import contract.dto.Booking;
 import contract.dto.PNRIdentifier;
+import contract.dto.Ticket;
 import contract.dto.User;
 import contract.interfaces.BeanInterface;
 import org.jboss.ejb.client.RequestSendFailedException;
@@ -27,6 +29,8 @@ public class MainToBeDeleted {
         }
         System.out.println(response);
         Booking b = beanI.getBooking(u, new PNRIdentifier(1));
+        Ticket t = (Ticket) b.getTickets().toArray()[0];
+        System.out.println(new TicketHelper().generateTicketId(t));
         System.out.println(b);
         System.out.println(b.getPrice());
     }
