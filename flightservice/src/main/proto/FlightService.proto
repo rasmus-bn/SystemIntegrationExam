@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package com.sebastiangds.flightservice;
+option java_multiple_files = true;
+option java_package = "com.sebastiangds.flightservice.lib";
+option java_outer_classname = "GetBookingProto";
+
+service FlightService {
+    rpc GetBooking (GetBookingRequest) returns (GetBookingReply) {
+
+    }
+}
+
+message GetBookingRequest {
+    int64 booking_id = 1;
+}
+
+message GetBookingReply {
+    BookingInfo booking = 1;
+}
+
+message BookingInfo {
+    int64 booking_id = 1;
+    double price = 2;
+    repeated TicketInfo tickets = 3;
+}
+
+message TicketInfo {
+    int64 flight_id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string dep_aiport_name = 4;
+    string dep_aiport_iata = 5;
+    string arr_aiport_name = 6;
+    string arr_aiport_iata = 7;
+}
+
