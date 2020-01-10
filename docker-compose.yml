@@ -1,0 +1,21 @@
+version: '3'
+services:
+  feedback-service:
+    build: ./Feedback
+    volumes:
+      - './Feedback/db:/home/node/app/db'
+      - './Feedback/src:/home/node/app/src'
+    expose:
+      - "3333"
+  gateway-service:
+    build: ./Gateway
+    volumes:
+      - './Gateway/src:/home/node/app/src'
+    ports:
+      - 4444:4444
+  food-service:
+    build: ./FoodRest
+    expose:
+      - "5009"
+    # ports: 
+    #   - 5009:5009
