@@ -6,7 +6,6 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -30,35 +29,40 @@ public class Sender implements AutoCloseable {
             try {
                 connection = factory.newConnection();
             } catch (IOException e) {
-                e.printStackTrace();
                 connection = null;
+                return false;
             } catch (TimeoutException e) {
-                e.printStackTrace();
                 connection = null;
+                return false;
             }
         }
 
-        if (connection != null && (channel == null || !channel.isOpen())) {
-            try {
-                channel = connection.createChannel();
-            } catch (IOException e) {
-                e.printStackTrace();
-                channel = null;
+        if (connection != null) {
+            if  (channel == null || !channel.isOpen()) {
+                try {
+                    channel = connection.createChannel();
+                } catch (IOException e) {
+                    channel = null;
+                    return false;
+                }
             }
+        } else {
+            return false;
         }
-        return channel != null;
+        return true;
     }
 
     public void makeLog(String className, SILevel level, String description, String msg){
         if (!connectToRabbit()) return;
         Message message = new Message(""+level.toString(), description, msg);
+        System.out.println(message.toString());
         sendToServer(message);
     }
 
     public String sendToServer(Message message) {
         String response = "";
         try (Sender logRpc = new Sender()) {
-            String toLog = message.getSeverity() + ", " + message.getDescription() + ", " + message.getMessage();
+            String toLog = message.toString();
             System.out.println("sending log...");
             response = logRpc.call(toLog);
             System.out.println(response);
@@ -78,7 +82,6 @@ public class Sender implements AutoCloseable {
                 .correlationId(corrId)
                 .replyTo(replyQueueName)
                 .build();
-
         channel.basicPublish("", this.QUEUE_NAME, props, message.getBytes("UTF-8"));
 
         final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);
