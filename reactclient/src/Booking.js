@@ -69,13 +69,13 @@ export default class Booking extends React.Component {
 
     showTickets = (e) => {
         this.setState({showTickets: true});
-        this.props.done("booking id", e.target[0].value);
+        this.props.bookingDone("booking id", e.target[0].value);
         e.preventDefault();
     }
 
     doneWithBooking = (e) => {
-        this.props.done("ticket id", this.state.ticketId);
-        this.props.done("booking done");
+        this.props.bookingDone("ticket id", this.state.ticketId);
+        this.props.bookingDone("booking done");
         e.preventDefault();
     }
 }

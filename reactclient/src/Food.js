@@ -1,10 +1,9 @@
 import React from 'react'
-import { getAllCategories } from './data'
 
 export default class Food extends React.Component {
     constructor() {
         super();
-        this.state = { categories: [], foodsOfCategories:[], categoryPicked: "", categoryFinished: false, foodChoiceFinished: false }
+        this.state = { categories: [], foodsOfCategories:[], foodName: "", categoryPicked: "", categoryFinished: false, foodChoiceFinished: false, foodDescription: "", foodId : null}
     }
 
     componentDidMount() {
@@ -30,6 +29,7 @@ export default class Food extends React.Component {
     chooseCategory = (e) => {
         console.log(e.target.innerText);
         this.setState({ categoryPicked: e.target.innerText, categoryFinished: true });
+        this.getFoodsOnData(e.target.innerText);
     }
 
     getFoodsOnData = (category) => {
@@ -45,15 +45,36 @@ export default class Food extends React.Component {
     presentCategorizedFoods = () => {
         var buttons = [];
         for (var i = 0; i < this.state.foodsOfCategories.length; i++) {
-            buttons.push(<button onClick={this.chooseFood}>{this.state.foodsOfCategories[i].name}</button>);
+            buttons.push(<button id={this.state.foodsOfCategories[i].id} onClick={this.chooseFood}>{this.state.foodsOfCategories[i].name}</button>);
         }
         return buttons;
     }
     chooseFood = (e) => {
-        alert(e.target.innerText);
+        this.setState({foodName: e.target.innerText, foodId: e.target.id});
+        fetch("http://localhost:5009/api/v1/food/" + e.target.id, {           method: "get", headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((data) => {
+        return data.json();
+    }).then((json) => {
+        this.setState({foodDescription : json.description});
+    })
         console.log(e.target.innerText);
     }
 
+    confirmFood = () => {
+        if(this.state.foodDescription !== ""){
+            return (<div>
+        <h1>food description: {this.state.foodName}</h1>
+                <p>{this.state.foodDescription}</p>
+                <button onClick={this.foodPurchased}>confirm food choice</button>
+            </div>)
+        }
+    }
+
+    foodPurchased = () => {
+        {this.props.foodDone("food done", this.state.foodId)}
+    }
 
     foodSteps = () => {
         if (this.state.categoryFinished === false && this.state.foodChoiceFinished === false) {
@@ -64,8 +85,8 @@ export default class Food extends React.Component {
         }
         if (this.state.categoryFinished === true && this.state.foodChoiceFinished === false) {
         return <div><p>time for food pick {this.state.categoryPicked}</p>
-            {this.getFoodsOnData(this.state.categoryPicked)}
             {this.presentCategorizedFoods()}
+            {this.confirmFood()}
             </div>
         }
     }
