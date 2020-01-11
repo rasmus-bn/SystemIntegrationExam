@@ -7,9 +7,13 @@ import com.sebastiangds.flightservice.lib.*;
 import contract.dto.*;
 import contract.interfaces.BeanInterface;
 import io.grpc.stub.StreamObserver;
+import logging.Sender;
 import org.lognet.springboot.grpc.GRpcService;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
 
 @GRpcService
 public class FlightServiceImpl extends FlightServiceGrpc.FlightServiceImplBase {
@@ -18,29 +22,34 @@ public class FlightServiceImpl extends FlightServiceGrpc.FlightServiceImplBase {
 
     @Override
     public void getBooking(GetBookingRequest request, StreamObserver<GetBookingReply> responseObserver) {
+        BeanInterface backend = null;
+        Sender send = null;
+        Booking booking = null;
         PNRIdentifier pnr = new PNRIdentifier(request.getBookingId());
-        System.out.println(pnr.getPnr());
-        BeanInterface backend = new EndpointFactory().getEndpoint();
+        try {
+            backend = new EndpointFactory().getEndpoint();
+            send = new Sender();
+            booking = backend.getBooking(user, pnr);
 
-        Booking booking = backend.getBooking(user, pnr);
-
-        System.out.println(booking);
-        System.out.println(pnr.getPnr());
-        System.out.println(booking.getPrice());
-
+            if (booking == null) {
+                send.makeLog("FlightServiceImpl", Level.WARNING, "A user search on a non existing booking  with pnr:", "" + request.getBookingId());
+            }
+        } catch (IOException e) {
+            send.makeLog("FlightServiceImpl", Level.SEVERE, "Can not find the user, or the booking id", e.getMessage());
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            send.makeLog("FlightServiceImpl", Level.SEVERE, "Timeout Exception", e.getMessage());
+            e.printStackTrace();
+        }
         BookingInfo.Builder bBuilder = BookingInfo.newBuilder();
-
         bBuilder.setBookingId(booking.getPnr().getPnr());
         bBuilder.setPrice(booking.getPrice());
-
         System.out.println("tickets");
         System.out.println(booking.getTickets().size());
-
         for (Ticket t : booking.getTickets()) {
             Passenger p = t.getPassenger();
             Flight f = t.getFlight();
             String tId = new TicketHelper().generateTicketId(t);
-
             TicketInfo tInfo = TicketInfo.newBuilder()
                     .setTicketId(tId)
                     .setFlightId(f.getId())
@@ -53,11 +62,11 @@ public class FlightServiceImpl extends FlightServiceGrpc.FlightServiceImplBase {
                     .build();
             bBuilder.addTickets(tInfo);
         }
-
         BookingInfo bookingInfo = bBuilder.build();
         GetBookingReply reply = GetBookingReply.newBuilder().setBooking(bookingInfo).build();
         System.out.println(booking.getPrice());
         responseObserver.onNext(reply);
         responseObserver.onCompleted();
+        send.makeLog("FlightSericeImpl", Level.FINE, "A user checked this booking with Pnr:", "" + booking.getPnr().getPnr());
     }
 }
