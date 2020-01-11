@@ -5,4 +5,4 @@ WORKDIR /home/node/app
 COPY . .
 RUN npm install
 
-CMD ["node", "rpc_server"]
+CMD ["node", "rpc_server.js"]

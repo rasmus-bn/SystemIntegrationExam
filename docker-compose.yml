@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+    logger-service:
+        build: ./loggerserver
+        depends_on:
+            - 'rabbitmq-service'
+        command: ['./wait-for-it.sh', 'rabbitmq-service:5672', '--timeout=20', '--', 'node', 'rpc_server.js']
+        volumes:
+            - './loggerserver:/home/node/app'
+    rabbitmq-service:
+        build: ./rabbitmq
+        expose:
+            - "5672"
+        ports:
+            - 25672:15672
+            - 5672:5672

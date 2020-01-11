@@ -2,8 +2,10 @@ var amqp = require('amqplib/callback_api');
 const fs = require('fs');
 var csvWriter = require('csv-write-stream')
 var writer = csvWriter()
+// const rabbitHost = 'amqp://rabbitmq-service'; // use when doing docker-compose
+const rabbitHost = 'amqp://localhost';
 
-amqp.connect('amqp://localhost', function (error0, connection) {
+amqp.connect(rabbitHost, function (error0, connection) {
     if (error0) {
         throw error0;
     }
