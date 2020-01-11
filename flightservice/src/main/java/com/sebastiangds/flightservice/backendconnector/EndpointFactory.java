@@ -1,6 +1,7 @@
 package com.sebastiangds.flightservice.backendconnector;
 
 import contract.interfaces.BeanInterface;
+import logging.SILevel;
 import logging.Sender;
 
 import javax.naming.Context;
@@ -21,10 +22,10 @@ public class EndpointFactory {
     private final String PROVIDER_URL = "http-remoting://35.207.154.57:8082";
     //private final String PROVIDER_URL = "http-remoting://localhost:8080";
     private final String LOOKUP_NAME = "ejb:/4/ContractBean!contract.interfaces.BeanInterface";
+    private EnvType envType = EnvType.DEV;
 
     public BeanInterface getEndpoint() throws IOException, TimeoutException {
         Sender sender = new Sender();
-        EnvType envType = EnvType.DEV;
         Map<String, String> sysEnv = System.getenv();
 
         if (sysEnv.containsKey(this.ENV_VAL_KEY)) {
@@ -36,8 +37,18 @@ public class EndpointFactory {
                         "Environment " + envVar + " provided by "
                                 + this.ENV_VAL_KEY + " not recognised. " +
                                 "Continue in " + envType.toString();
-                sender.makeLog("EndpointFactory", Level.SEVERE,"Bean connection error",warningMsg);
+                sender.makeLog(
+                        "EndpointFactory",
+                        SILevel.WARNING,
+                        this.ENV_VAL_KEY + " not recognised",
+                        warningMsg);
             }
+        } else {
+            sender.makeLog(
+                    "EndpointFactory",
+                    SILevel.WARNING,
+                    this.ENV_VAL_KEY + " not set",
+                    "Defaulting to " + envType.toString());
         }
 
         switch (envType) {
@@ -73,10 +84,15 @@ public class EndpointFactory {
             InitialContext ic = new InitialContext(prop);
 
             BeanInterface endpoint = (BeanInterface) ic.lookup(this.LOOKUP_NAME);
+            sender.makeLog(
+                    EndpointFactory.class.getName(),
+                    SILevel.INFO,
+                    "Flight service connected",
+                    "Connected to end point for env " + this.envType.toString());
             return endpoint;
         } catch (NamingException e) {
 
-            sender.makeLog("EndpointFactory", Level.SEVERE, "Bean naming wrong in production", e.getMessage());
+            sender.makeLog(EndpointFactory.class.getName(), SILevel.SEVERE, "Bean naming wrong in production", e.getMessage());
             return null;
         }
 

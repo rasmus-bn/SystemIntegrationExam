@@ -6,7 +6,6 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -78,7 +77,7 @@ public class Sender implements AutoCloseable {
                 .correlationId(corrId)
                 .replyTo(replyQueueName)
                 .build();
-
+        System.out.println(message);
         channel.basicPublish("", this.QUEUE_NAME, props, message.getBytes("UTF-8"));
 
         final BlockingQueue<String> response = new ArrayBlockingQueue<>(1);

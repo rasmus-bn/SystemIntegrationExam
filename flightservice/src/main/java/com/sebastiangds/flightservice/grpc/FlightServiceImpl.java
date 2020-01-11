@@ -1,19 +1,18 @@
 package com.sebastiangds.flightservice.grpc;
 
-import com.google.common.hash.Hashing;
 import com.sebastiangds.flightservice.backendconnector.EndpointFactory;
 import com.sebastiangds.flightservice.components.TicketHelper;
 import com.sebastiangds.flightservice.lib.*;
 import contract.dto.*;
 import contract.interfaces.BeanInterface;
 import io.grpc.stub.StreamObserver;
+import logging.SILevel;
 import logging.Sender;
 import org.lognet.springboot.grpc.GRpcService;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
+
 
 @GRpcService
 public class FlightServiceImpl extends FlightServiceGrpc.FlightServiceImplBase {
@@ -32,13 +31,13 @@ public class FlightServiceImpl extends FlightServiceGrpc.FlightServiceImplBase {
             booking = backend.getBooking(user, pnr);
 
             if (booking == null) {
-                send.makeLog("FlightServiceImpl", Level.WARNING, "A user search on a non existing booking  with pnr:", "" + request.getBookingId());
+                send.makeLog(FlightServiceImpl.class.getName(), SILevel.WARNING, "A user search on a non existing booking  with pnr:", "" + request.getBookingId());
             }
         } catch (IOException e) {
-            send.makeLog("FlightServiceImpl", Level.SEVERE, "Can not find the user, or the booking id", e.getMessage());
+            send.makeLog(FlightServiceImpl.class.getName(), SILevel.SEVERE, "Can not find the user, or the booking id", e.getMessage());
             e.printStackTrace();
         } catch (TimeoutException e) {
-            send.makeLog("FlightServiceImpl", Level.SEVERE, "Timeout Exception", e.getMessage());
+            send.makeLog(FlightServiceImpl.class.getName(), SILevel.SEVERE, "Timeout Exception", e.getMessage());
             e.printStackTrace();
         }
         BookingInfo.Builder bBuilder = BookingInfo.newBuilder();
@@ -67,6 +66,6 @@ public class FlightServiceImpl extends FlightServiceGrpc.FlightServiceImplBase {
         System.out.println(booking.getPrice());
         responseObserver.onNext(reply);
         responseObserver.onCompleted();
-        send.makeLog("FlightSericeImpl", Level.FINE, "A user checked this booking with Pnr:", "" + booking.getPnr().getPnr());
+        send.makeLog(FlightServiceImpl.class.getName(), SILevel.INFO, "A user checked this booking with Pnr:", "" + booking.getPnr().getPnr());
     }
 }
