@@ -4,6 +4,8 @@ import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import services.EnvHelper;
+import services.Service;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -16,9 +18,10 @@ public class Sender implements AutoCloseable {
     private Connection connection;
     private Channel channel;
     private final String QUEUE_NAME = "rpc_queue";
-    private final String HOST_NAME = "localhost";
+    private final String HOST_NAME;
 
     public Sender() {
+        this.HOST_NAME = new EnvHelper().getService(Service.RABBIT).getHost();
         connectToRabbit();
     }
 
@@ -103,4 +106,3 @@ public class Sender implements AutoCloseable {
         connection.close();
     }
 }
-

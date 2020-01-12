@@ -1,6 +1,5 @@
-package com.sebastiangds.services;
+package services;
 
-import com.sebastiangds.flightservice.backendconnector.EndpointFactory;
 import logging.SILevel;
 import logging.Sender;
 
@@ -78,7 +77,6 @@ public class EnvHelper {
                 "Info was host <" + info.getHost() + "> port <" + info.getPort() + ">");
         return info;
     }
-
 
     public EnvType getEnvType() {
         return envType;
