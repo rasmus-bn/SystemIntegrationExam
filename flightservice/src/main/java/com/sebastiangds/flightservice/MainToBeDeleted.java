@@ -10,6 +10,7 @@ import contract.dto.User;
 import contract.interfaces.BeanInterface;
 
 
+import logging.SILevel;
 import logging.Sender;
 import org.jboss.ejb.client.RequestSendFailedException;
 
@@ -42,6 +43,6 @@ public class MainToBeDeleted {
         System.out.println(b.getPrice());
 
         Sender sender = new Sender();
-        sender.makeLog("MaintoBeDeleted", Level.WARNING,"hello from flightserivce","its me mo");
+        sender.makeLog("MaintoBeDeleted", SILevel.WARNING,"hello from flightserivce","its me mo");
     }
 }

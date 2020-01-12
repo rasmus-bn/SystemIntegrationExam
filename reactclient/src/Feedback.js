@@ -25,6 +25,15 @@ saveFeedback = (e) => {
     console.log(location);
     console.log(rating);
     console.log(feedback);
+    
+    var data = {name: name, age: age, location: location, gender: gender, feedback: feedback, rating: rating}
+
+    fetch("http://localhost:3333/savefeedback",{method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)}).then((res)=>{
+        return res.text();
+    }).then((text)=>{
+        alert(text);
+    })
+
     e.preventDefault();
 }
 

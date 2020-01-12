@@ -1,21 +1,16 @@
-version: '3'
+version: '3.7'
 services:
-  feedback-service:
-    build: ./Feedback
-    volumes:
-      - './Feedback/db:/home/node/app/db'
-      - './Feedback/src:/home/node/app/src'
-    expose:
-      - "3333"
-  gateway-service:
-    build: ./Gateway
-    volumes:
-      - './Gateway/src:/home/node/app/src'
-    ports:
-      - 4444:4444
-  food-service:
-    build: ./FoodRest
-    expose:
-      - "5009"
-    # ports: 
-    #   - 5009:5009
+    logger-service:
+        build: ./loggerserver
+        depends_on:
+            - 'rabbitmq-service'
+        command: ['./wait-for-it.sh', 'rabbitmq-service:5672', '--timeout=20', '--', 'node', 'rpc_server.js']
+        volumes:
+            - './loggerserver:/home/node/app'
+    rabbitmq-service:
+        build: ./rabbitmq
+        expose:
+            - "5672"
+        ports:
+            - 25672:15672
+            - 5672:5672

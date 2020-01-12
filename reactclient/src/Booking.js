@@ -3,11 +3,30 @@ import React from 'react'
 export default class Booking extends React.Component {
     constructor() {
         super();
-        this.state = { showTickets: false, ticketId : null}
+        this.state = { showTickets: false, ticketId : null, ticketIds : [], airportNames : []}
+    }
+
+
+    generateButtons = () => {
+      var arr = [];
+      for (let index = 0; index < this.state.ticketIds.length; index++) {
+        arr.push(<li>
+          <label>
+            <input
+              type="radio"
+              value={this.state.ticketIds[index]}
+              checked={this.state.size === "small"}
+              onChange={this.handleChange}
+            />
+            {this.state.airportNames[index]} (id {this.state.ticketIds[index]})
+          </label>
+        </li>)
+      }
+      return arr;
     }
 
     render() {
-        return (<div>
+        return (<div>ids:{this.state.ticketIds}<br/>anames:{this.state.airportNames}
             <form onSubmit={this.showTickets}>
                 <input placeholder="booking id" />
                 <input type="submit" />
@@ -16,41 +35,7 @@ export default class Booking extends React.Component {
       <p>Select a ticket:</p>
       
       <ul>
-        <li>
-          <label>
-            <input
-              type="radio"
-              value="1"
-              checked={this.state.size === "small"}
-              onChange={this.handleChange}
-            />
-            ticket1 (id 1)
-          </label>
-        </li>
-        
-        <li>
-          <label>
-            <input
-              type="radio"
-              value="1"
-              checked={this.state.size === "medium"}
-              onChange={this.handleChange}
-            />
-            ticket2 (id 1)
-          </label>
-        </li>
-
-        <li>
-          <label>
-            <input
-              type="radio"
-              value="1"
-              checked={this.state.size === "large"}
-              onChange={this.handleChange}
-            />
-            ticket3 (id 1)
-          </label>
-        </li>
+        {this.generateButtons()}
       </ul>
 
       <button type="submit">Make your choice</button>
@@ -69,6 +54,21 @@ export default class Booking extends React.Component {
 
     showTickets = (e) => {
         this.setState({showTickets: true});
+        fetch("http://localhost:5009/api/v1/food/bookings?id=" + e.target[0].value, {
+          method: "get",
+          headers: {'Content-Type': 'application/json' }
+        }).then((res)=>{
+          return res.json();
+        }).then((json)=>{
+          var arrIds = [];
+          var arrAnames = [];
+          for (let index = 0; index < json.booking.tickets.length; index++) {
+            arrIds.push(json.booking.tickets[index].flightId);
+            arrAnames.push(json.booking.tickets[index].arrAiportName);
+          }
+        
+          this.setState({ticketIds : arrIds, airportNames : arrAnames});
+        })
         this.props.bookingDone("booking id", e.target[0].value);
         e.preventDefault();
     }

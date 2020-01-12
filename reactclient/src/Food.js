@@ -73,6 +73,13 @@ export default class Food extends React.Component {
     }
 
     foodPurchased = () => {
+    
+        var data = {bookingId : this.props.bookingId, ticketId: this.props.ticketId, foodName: this.state.foodName, description: this.state.foodDescription}
+        alert(data.name);
+        fetch("http://localhost:5009/api/v1/food/saveBookings",{method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)})
+        .then((res)=>{
+            return res.text();
+        }).then((text)=>{alert(text);})
         {this.props.foodDone("food done", this.state.foodId)}
     }
 

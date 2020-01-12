@@ -2,8 +2,11 @@ var amqp = require('amqplib/callback_api');
 const fs = require('fs');
 var csvWriter = require('csv-write-stream')
 var writer = csvWriter()
+const env = require('./env_helper');
 
-amqp.connect('amqp://localhost', function (error0, connection) {
+const rabbitHost = 'amqp://' + env.getService(env.service.RABBIT).host;
+
+amqp.connect(rabbitHost, function (error0, connection) {
     if (error0) {
         throw error0;
     }
