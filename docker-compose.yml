@@ -19,6 +19,9 @@ services:
         build: ./FoodRest  
         environment:
             - ENV_TYPE=COMPOSE
+        depends_on:
+            - 'mongodb'
+        command: ['./wait-for-it.sh', 'mongodb:27017', '--timeout=10', '--', 'mvn', 'spring-boot:run']
         expose:
             - '5009'
         ports: 
@@ -28,6 +31,9 @@ services:
         build: ./flightservice
         environment:
             - ENV_TYPE=COMPOSE
+        depends_on:
+            - 'mongodb'
+        command: ['./wait-for-it.sh', 'mongodb:27017', '--timeout=10', '--', 'mvn', 'spring-boot:run']
         expose:
             - '6565'
         ports: 
