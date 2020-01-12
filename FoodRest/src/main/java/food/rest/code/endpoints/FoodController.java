@@ -3,6 +3,9 @@ package food.rest.code.endpoints;
 import com.google.gson.Gson;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import food.rest.code.Entities.Food;
 import food.rest.code.logic.FlightServiceGrpc;
 import food.rest.code.logic.GetBookingReply;
@@ -12,6 +15,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import logging.SILevel;
 import logging.Sender;
+import org.bson.Document;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -159,5 +163,26 @@ public class FoodController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:8080/")
+    @PostMapping("/saveBookings")
+    public void saveBooking(@RequestBody SaveBookingRequest reqObj){
+        System.out.println("hello");
+        System.out.println(reqObj);
+
+        ServiceInfo mongoInfo = new EnvHelper().getService(Service.MONGO);
+        MongoClient mongoClient = new MongoClient(mongoInfo.getHost(), mongoInfo.getPort());
+        MongoDatabase database = mongoClient.getDatabase("food");
+        MongoCollection<Document> coll = database.getCollection("booking");
+        Document document = new Document("bookingId",reqObj.getBookingId())
+                .append("tickets",new Document("ticketId",reqObj.getTicketId()))
+                .append("foods",new Document("name",reqObj.getFoodName())
+                        .append("description",reqObj.getDescription()));
+        coll.insertOne(document);
+
+        System.out.println("The food order to the ticket with id:" + reqObj.getTicketId() +
+                " have ben successfully saved to the mongo database");
+
+
+    }
 
 }
