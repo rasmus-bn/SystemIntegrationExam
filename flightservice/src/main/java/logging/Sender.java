@@ -18,10 +18,10 @@ public class Sender implements AutoCloseable {
     private Connection connection;
     private Channel channel;
     private final String QUEUE_NAME = "rpc_queue";
-    private final String HOST_NAME;
+    private final String HOST_NAME = "localhost";
 
     public Sender() {
-        this.HOST_NAME = new EnvHelper().getService(Service.RABBIT).getHost();
+        //this.HOST_NAME = new EnvHelper().getService(Service.RABBIT).getHost();
         connectToRabbit();
     }
 
