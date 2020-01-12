@@ -1,3 +1,5 @@
+use booking
+
 db.booking.insert({bookingId: 1, 
     tickets: [{ticketId: 1, 
         foods: [{name: "peanuts", description: "peanuts description"}, {name: "sandwich", description: "sandwich description"}],

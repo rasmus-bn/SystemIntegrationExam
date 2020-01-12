@@ -1,7 +1,9 @@
 const backend = require('./backend');
+const mongo = require('./mongoose');
 const express = require('express');
 const cors = require('cors')
 const bodyParser = require('body-parser');
+
 
 backend.initialSetup();
 
@@ -17,6 +19,12 @@ app.get('/help', (req, res) => {
     `;
     res.send(msg);
 });
+//saveFeedback = (name, age, location, gender, feedback, rating) => {
+app.post('/savefeedback', jsonParser, (req, res)=>{
+    console.log(req.body.name);
+    saveFeedback(req.body.name, req.body.age, req.body.location, req.body.gender, req.body.feedback, req.body.rating);
+    res.send("feedback saved!");
+})
 
 app.post('/feedback', jsonParser, (req, res) => {
     console.log(req.body);
