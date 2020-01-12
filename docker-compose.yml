@@ -2,15 +2,56 @@ version: '3.7'
 services:
     logger-service:
         build: ./loggerserver
+        environment:
+            - ENV_TYPE=COMPOSE
         depends_on:
-            - 'rabbitmq-service'
-        command: ['./wait-for-it.sh', 'rabbitmq-service:5672', '--timeout=20', '--', 'node', 'rpc_server.js']
+            - 'rabbitmq'
+        command: ['./wait-for-it.sh', 'rabbitmq-service:5672', '--timeout=10', '--', 'node', 'rpc_server.js']
         volumes:
             - './loggerserver:/home/node/app'
-    rabbitmq-service:
-        build: ./rabbitmq
+    
+    feedback-service:
+        build: ./feedback
+        environment:
+            - ENV_TYPE=COMPOSE
+
+    food-service:
+        build: ./FoodRest  
+        environment:
+            - ENV_TYPE=COMPOSE
         expose:
-            - "5672"
+            - '5009'
+        ports: 
+            - 5009:5009
+
+    flight-service:
+        build: ./flightservice
+        environment:
+            - ENV_TYPE=COMPOSE
+        expose:
+            - '6565'
+        ports: 
+            - 6565:6565
+
+    mongodb:
+        build: ./mongodb
+        environment:
+            - ENV_TYPE=COMPOSE
+        expose:
+            - '27017'
+        ports: 
+            - 27017:27017
+        volumes:
+            - './mongodb/data:/data/db'
+
+    rabbitmq:
+        build: ./rabbitmq
+        environment:
+            - ENV_TYPE=COMPOSE
+        expose:
+            - '5672'
         ports:
             - 25672:15672
             - 5672:5672
+    
+    

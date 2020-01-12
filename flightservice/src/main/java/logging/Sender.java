@@ -18,11 +18,10 @@ public class Sender implements AutoCloseable {
     private Connection connection;
     private Channel channel;
     private final String QUEUE_NAME = "rpc_queue";
-    private final String HOST_NAME = "localhost";
+    private final String HOST_NAME;
 
     public Sender() {
-        //this.HOST_NAME = new EnvHelper().getService(Service.RABBIT).getHost();
-        connectToRabbit();
+        this.HOST_NAME = new EnvHelper().getService(Service.RABBIT).getHost();
     }
 
     private boolean connectToRabbit() {
@@ -56,7 +55,6 @@ public class Sender implements AutoCloseable {
     }
 
     public void makeLog(String className, SILevel level, String description, String msg){
-        if (!connectToRabbit()) return;
         Message message = new Message(""+level.toString(), description, msg);
         System.out.println(message.toString());
         sendToServer(message);
@@ -79,6 +77,10 @@ public class Sender implements AutoCloseable {
     public String call(String message) throws IOException, InterruptedException {
         final String corrId = UUID.randomUUID().toString();
 
+        if (!connectToRabbit()) {
+            System.out.println("Sender could not connect to RabbitMQ");
+            return "";
+        }
         String replyQueueName = channel.queueDeclare().getQueue();
         AMQP.BasicProperties props = new AMQP.BasicProperties
                 .Builder()
@@ -106,4 +108,3 @@ public class Sender implements AutoCloseable {
         connection.close();
     }
 }
-
