@@ -7,10 +7,39 @@ services:
         command: ['./wait-for-it.sh', 'rabbitmq-service:5672', '--timeout=20', '--', 'node', 'rpc_server.js']
         volumes:
             - './loggerserver:/home/node/app'
-    rabbitmq-service:
+    
+    feedback-service:
+        build: ./feedback
+
+    food-service:
+        build: ./FoodRest  
+        expose:
+            - '5009'
+        ports: 
+            - 5009:5009
+
+    flight-service:
+        build: ./flightservice
+        expose:
+            - '6565'
+        ports: 
+            - 6565:6565
+
+    mongodb:
+        build: ./mongodb
+        expose:
+            - '27017'
+        ports: 
+            - 27017:27017
+        volumes:
+            - './mongodb/data:/data/db'
+
+    rabbitmq:
         build: ./rabbitmq
         expose:
-            - "5672"
+            - '5672'
         ports:
             - 25672:15672
             - 5672:5672
+    
+    
