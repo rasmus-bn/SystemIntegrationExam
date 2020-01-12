@@ -1,5 +1,7 @@
 package com.sebastiangds.flightservice.backendconnector;
 
+import com.sebastiangds.services.EnvHelper;
+import com.sebastiangds.services.EnvType;
 import contract.interfaces.BeanInterface;
 import logging.SILevel;
 import logging.Sender;
@@ -25,31 +27,7 @@ public class EndpointFactory {
     private EnvType envType = EnvType.DEV;
 
     public BeanInterface getEndpoint() throws IOException, TimeoutException {
-        Sender sender = new Sender();
-        Map<String, String> sysEnv = System.getenv();
-
-        if (sysEnv.containsKey(this.ENV_VAL_KEY)) {
-            String envVar = sysEnv.get(this.ENV_VAL_KEY);
-            try {
-                envType = EnvType.valueOf(envVar);
-            } catch (IllegalArgumentException e) {
-                String warningMsg =
-                        "Environment " + envVar + " provided by "
-                                + this.ENV_VAL_KEY + " not recognised. " +
-                                "Continue in " + envType.toString();
-                sender.makeLog(
-                        "EndpointFactory",
-                        SILevel.WARNING,
-                        this.ENV_VAL_KEY + " not recognised",
-                        warningMsg);
-            }
-        } else {
-            sender.makeLog(
-                    "EndpointFactory",
-                    SILevel.WARNING,
-                    this.ENV_VAL_KEY + " not set",
-                    "Defaulting to " + envType.toString());
-        }
+        envType = new EnvHelper().getEnvType();
 
         switch (envType) {
             case DEV:

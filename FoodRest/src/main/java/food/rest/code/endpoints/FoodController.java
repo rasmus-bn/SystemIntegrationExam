@@ -16,6 +16,9 @@ import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import services.EnvHelper;
+import services.Service;
+import services.ServiceInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -128,8 +131,9 @@ public class FoodController {
     @GetMapping("/bookings")
     public String getBookingById(@RequestParam Long id){
         Sender sender = new Sender();
+        ServiceInfo flightService = new EnvHelper().getService(Service.FLIGHT);
 
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 6565)
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(flightService.getHost(), flightService.getPort())
                 .usePlaintext()
                 .build();
 
