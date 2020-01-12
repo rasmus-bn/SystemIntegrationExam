@@ -1,4 +1,4 @@
-package MangoDB;
+package mongodb;
 
 public class test {
 
@@ -6,6 +6,8 @@ public class test {
 
     public static void main(String[] args) {
         Connector con = new Connector();
-        con.getCollection();
+        System.out.println(con.getCollection());
+
+        System.out.println("finished");
     }
 }
