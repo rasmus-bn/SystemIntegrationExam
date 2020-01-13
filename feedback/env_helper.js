@@ -30,10 +30,6 @@ class ServiceInfo {
 
 function getService(serviceName) {
   const info = serviceMap[serviceName][envType];
-  console.log(serviceName);
-  console.log(info);
-  console.log(serviceMap);
-  console.log(envType);
   console.log(
     "Retrieved service info for " + serviceName.toString(),
     "Info was host " + info.host + ":" + info.port
@@ -46,17 +42,17 @@ function setUp() {
   let envStr = process.env[envValKey];
   if (envStr) {
 
-    envStr = envStr.toUpperCase();
-    
+    envStr = envStr.toString().toUpperCase();
+
     if (EnvType[envStr]) {
       envType = EnvType[envStr];
     } else {
 
       const warningMsg = 
-        "Environment " + envType + " provided by "
+        "Environment " + envStr + " provided by "
         + envValKey + " not recognised. " +
         "Continue in " + envType;
-      console.log(envValKey + " not recognised, " + warningMsg);
+      console.log(envValKey + " not recognised. " + warningMsg);
     }
   } else {
     console.log(

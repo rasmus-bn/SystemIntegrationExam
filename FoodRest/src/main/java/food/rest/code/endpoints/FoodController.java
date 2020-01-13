@@ -45,7 +45,7 @@ public class FoodController {
         return null;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/test")
     public String doIt(){
         ArrayList<Food> foods = loadFood();
@@ -53,7 +53,7 @@ public class FoodController {
         return toString;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/categories")
     public String getCategories(){
         Sender sender = new Sender();
@@ -73,7 +73,7 @@ public class FoodController {
         return gson.toJson(categories);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/{id}")
     public String getFoodById(@PathVariable long id){
         Sender sender = new Sender();
@@ -93,7 +93,7 @@ public class FoodController {
         return gson.toJson(foodById);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/category")
     public String getCategory(@RequestParam String name){
         Sender sender = new Sender();
@@ -112,7 +112,7 @@ public class FoodController {
         return gson.toJson(categorizedFoods);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/names")
     public String getFoodByName(@RequestParam String name){
         Sender sender = new Sender();
@@ -131,7 +131,7 @@ public class FoodController {
         return gson.toJson(foodsByName);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/bookings")
     public String getBookingById(@RequestParam Long id){
         Sender sender = new Sender();
@@ -163,9 +163,9 @@ public class FoodController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:8080/")
     @PostMapping("/saveBookings")
-    public String saveBooking(@RequestBody SaveBookingRequest reqObj){
+    public void saveBooking(@RequestBody SaveBookingRequest reqObj){
         System.out.println("hello");
         System.out.println(reqObj);
 
@@ -182,7 +182,7 @@ public class FoodController {
         System.out.println("The food order to the ticket with id:" + reqObj.getTicketId() +
                 " have ben successfully saved to the mongo database");
 
-return "food purchase complete";
+
     }
 
 }
