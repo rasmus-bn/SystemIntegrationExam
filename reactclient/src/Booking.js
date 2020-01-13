@@ -64,7 +64,7 @@ export default class Booking extends React.Component {
 
     showTickets = (e) => {
         this.setState({showTickets: true});
-        fetch("http://localhost:5009/api/v1/food/bookings?id=" + e.target[0].value, {
+        fetch("http://localhost:4444/food/api/v1/food/bookings?id=" + e.target[0].value, {
           method: "get",
           headers: {'Content-Type': 'application/json' }
         }).then((res)=>{

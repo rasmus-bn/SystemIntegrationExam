@@ -7,7 +7,8 @@ export default class Food extends React.Component {
     }
 
     componentDidMount() {
-        fetch("http://localhost:5009/api/v1/food/categories", {
+        
+        fetch("http://localhost:4444/food/api/v1/food/categories", {
             method: "get", headers: {
                 'Content-Type': 'application/json'
             }
@@ -33,7 +34,7 @@ export default class Food extends React.Component {
     }
 
     getFoodsOnData = (category) => {
-        fetch("http://localhost:5009/api/v1/food/category?name="+category, {method: "get", headers:{
+        fetch("http://localhost:4444/food/api/v1/food/category?name="+category, {method: "get", headers:{
             'Content-Type': 'application/json'    
         }
     }).then((data)=>{
@@ -51,7 +52,7 @@ export default class Food extends React.Component {
     }
     chooseFood = (e) => {
         this.setState({foodName: e.target.innerText, foodId: e.target.id});
-        fetch("http://localhost:5009/api/v1/food/" + e.target.id, {           method: "get", headers: {
+        fetch("http://localhost:4444/food/api/v1/food/" + e.target.id, {           method: "get", headers: {
             'Content-Type': 'application/json'
         }
     }).then((data) => {
@@ -75,7 +76,7 @@ export default class Food extends React.Component {
     foodPurchased = () => {
     
         var data = {bookingId : this.props.bookingId, ticketId: this.props.ticketId, foodName: this.state.foodName, description: this.state.foodDescription}
-        fetch("http://localhost:5009/api/v1/food/saveBookings",{method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)})
+        fetch("http://localhost:4444/food/api/v1/food/saveBookings",{method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)})
         alert("food has been ordered!");
         {this.props.foodDone("food done", this.state.foodId)}
     }

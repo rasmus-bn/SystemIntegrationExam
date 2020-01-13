@@ -45,7 +45,7 @@ public class FoodController {
         return null;
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/test")
     public String doIt(){
         ArrayList<Food> foods = loadFood();
@@ -53,7 +53,7 @@ public class FoodController {
         return toString;
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/categories")
     public String getCategories(){
         Sender sender = new Sender();
@@ -73,7 +73,7 @@ public class FoodController {
         return gson.toJson(categories);
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/{id}")
     public String getFoodById(@PathVariable long id){
         Sender sender = new Sender();
@@ -93,7 +93,7 @@ public class FoodController {
         return gson.toJson(foodById);
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/category")
     public String getCategory(@RequestParam String name){
         Sender sender = new Sender();
@@ -112,7 +112,7 @@ public class FoodController {
         return gson.toJson(categorizedFoods);
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/names")
     public String getFoodByName(@RequestParam String name){
         Sender sender = new Sender();
@@ -131,11 +131,13 @@ public class FoodController {
         return gson.toJson(foodsByName);
     }
 
-    @CrossOrigin(origins = "http://localhost:8080")
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/bookings")
     public String getBookingById(@RequestParam Long id){
         Sender sender = new Sender();
+        System.out.printf("Getbooking " + id);
         ServiceInfo flightService = new EnvHelper().getService(Service.FLIGHT);
+        System.out.printf(new EnvHelper().getService(Service.FLIGHT).getHost());
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(flightService.getHost(), flightService.getPort())
                 .usePlaintext()
@@ -163,7 +165,7 @@ public class FoodController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:8080/")
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/saveBookings")
     public void saveBooking(@RequestBody SaveBookingRequest reqObj){
         System.out.println("hello");

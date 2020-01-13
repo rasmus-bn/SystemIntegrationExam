@@ -191,3 +191,7 @@ timeStamp, value, severity, description, message
 2020-1-12 20:8,6,INFO,Food service retrieved booking with id 1,
 2020-1-12 20:8,4,WARNING,ENV_TYPE not set,Defaulting to DEV
 2020-1-12 20:8,6,INFO,Retrieved service info for FLIGHT,Info was host <localhost> port <6565>
+2020-1-13 1:27,6,INFO,select all categories,(all foods) list size is: 24
+2020-1-13 1:37,6,INFO,Flight service connected,Connected to end point for env DEV
+2020-1-13 1:37,6,INFO,A user checked this booking with Pnr:,1
+2020-1-13 1:37,6,INFO,Food service retrieved booking with id 1,

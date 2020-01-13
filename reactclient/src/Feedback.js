@@ -28,7 +28,7 @@ saveFeedback = (e) => {
     
     var data = {name: name, age: age, location: location, gender: gender, feedback: feedback, rating: rating}
 
-    fetch("http://localhost:3333/savefeedback",{method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)}).then((res)=>{
+    fetch("http://localhost:4444/feedback/savefeedback",{method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)}).then((res)=>{
         return res.text();
     }).then((text)=>{
         alert(text);

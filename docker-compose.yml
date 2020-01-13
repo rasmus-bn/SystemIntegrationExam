@@ -70,3 +70,10 @@ services:
             - './gateway/src:/home/node/app/src'
         ports:
             - 4444:4444
+
+    react:
+        build: ./reactclient
+        volumes:
+            - './reactclient:/app'
+        ports:
+            - 3000:3000

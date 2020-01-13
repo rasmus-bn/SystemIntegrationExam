@@ -77,6 +77,11 @@ public class Sender implements AutoCloseable {
     public String call(String message) throws IOException, InterruptedException {
         final String corrId = UUID.randomUUID().toString();
 
+        if (!connectToRabbit()) {
+            System.out.println("Sender could not connect to RabbitMQ");
+            return "";
+        }
+
         String replyQueueName = channel.queueDeclare().getQueue();
         AMQP.BasicProperties props = new AMQP.BasicProperties
                 .Builder()
