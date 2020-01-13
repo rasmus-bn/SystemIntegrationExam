@@ -73,18 +73,22 @@ export default class Food extends React.Component {
     }
 
     foodPurchased = () => {
+    
+        var data = {bookingId : this.props.bookingId, ticketId: this.props.ticketId, foodName: this.state.foodName, description: this.state.foodDescription}
+        fetch("http://localhost:5009/api/v1/food/saveBookings",{method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)})
+        alert("food has been ordered!");
         {this.props.foodDone("food done", this.state.foodId)}
     }
 
     foodSteps = () => {
         if (this.state.categoryFinished === false && this.state.foodChoiceFinished === false) {
-            return <div>booking id:{this.props.bookingId}
-                , ticket id:{this.props.ticketId}
+            return <div>
                 <h1>Food</h1>
+                <p>please pick a food category</p>
                 {this.foodCategoryButtons()}</div>
         }
         if (this.state.categoryFinished === true && this.state.foodChoiceFinished === false) {
-        return <div><p>time for food pick {this.state.categoryPicked}</p>
+        return <div><p>please pick a specific food having to do with {this.state.categoryPicked}</p>
             {this.presentCategorizedFoods()}
             {this.confirmFood()}
             </div>

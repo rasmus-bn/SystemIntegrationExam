@@ -34,7 +34,7 @@ class Root extends React.Component{
       return <Booking id={this.state.bookingId} bookingDone={(val, val2) => this.changeState(val, val2)}/>
     }
     if(this.state.bookingFinished === true && this.state.foodFinished === false){
-      return <Food bookingId={this.state.bookingId} foodDone={(val, val2) => this.changeState(val, val2)} ticketId={this.state.ticketId}done={(val) => this.changeState(val)}/>
+      return <Food bookingId={this.state.bookingId} ticketId={this.state.ticketId} foodDone={(val, val2) => this.changeState(val, val2)} ticketId={this.state.ticketId}done={(val) => this.changeState(val)}/>
     }
     if(this.state.bookingFinished === true && this.state.foodFinished === true){
       return <Feedback choices={this.state} feedbackDone={(val, val2) => this.changeState(val,val2)}/>

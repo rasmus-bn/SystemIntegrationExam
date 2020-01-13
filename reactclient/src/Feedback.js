@@ -25,17 +25,20 @@ saveFeedback = (e) => {
     console.log(location);
     console.log(rating);
     console.log(feedback);
+    
+    var data = {name: name, age: age, location: location, gender: gender, feedback: feedback, rating: rating}
+
+    fetch("http://localhost:3333/savefeedback",{method: "post", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)}).then((res)=>{
+        return res.text();
+    }).then((text)=>{
+        alert(text);
+    })
+
     e.preventDefault();
 }
 
     render(){
         return(<div>
-            <p>choice was: </p>
-            <div>
-                <p>booking id: {this.props.choices.bookingId}</p>
-                <p>ticket id: {this.props.choices.ticketId}</p>
-                <p>Food id: {this.props.choices.foodId}</p>
-            </div>
             <h1>thank you! we would love some feedback if possible :)</h1>
             <form onSubmit={this.saveFeedback}>
                 <input placeholder="name"/>
